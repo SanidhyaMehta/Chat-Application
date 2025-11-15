@@ -37,6 +37,14 @@ app.use("/api/user", userRoutes);
 app.use("/api/friend-request", friendRequestRoutes);
 app.use("/api/message", messageRoutes);
 
+// Development: redirect root URL to Vite dev server for convenience
+app.get("/", (req, res) => {
+  if (process.env.NODE_ENV !== "production") {
+    return res.redirect("http://localhost:5173");
+  }
+  res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+});
+
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "/client/dist")));
 
